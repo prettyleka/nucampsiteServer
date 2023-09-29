@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 const campsiteRouter = require('./routes/campsiteRouter');
 const promotionRouter = require('./routes/promotionRouter');
 const partnerRouter = require('./routes/partnerRouter');
+const passport = require('passport');
+const authenticate = require('./authenticate');
 
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
@@ -30,7 +32,8 @@ connect.then(() => console.log('Connected correctly to server'),
 
 
 var app = express();
-//app.use(auth);
+app.use(passport.initialize());
+app.use(passport.session());
 //app.use(cookieParser('12345-67890-09876-54321'));
 app.use(session({
   name: 'session-id',
@@ -90,27 +93,40 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-function auth(req, res, next) {
-  console.log(req.session);
-
-  if (!req.session.user) {
-      const err = new Error('You are not authenticated!');
-      err.status = 401;
-      return next(err);
-  } else {
-      if (req.session.user === 'authenticated') {
-          return next();
-      } else {
-          const err = new Error('You are not authenticated!');
-          err.status = 401;
-          return next(err);
-      }
-  }
-}
 app.use('/campsites', campsiteRouter);
 app.use('/promotions', promotionRouter);
 app.use('/partners', partnerRouter);
+// function auth(req, res, next) {
+//   console.log(req.session);
+
+//   if (!req.session.user) {
+//       const err = new Error('You are not authenticated!');
+//       err.status = 401;
+//       return next(err);
+//   } else {
+//       if (req.session.user === 'authenticated') {
+//           return next();
+//       } else {
+//           const err = new Error('You are not authenticated!');
+//           err.status = 401;
+//           return next(err);
+//       }
+//   }
+// }
+
+function auth_passport(req, res, next) {
+  console.log(req.user);
+  if (!req.user) {
+      const err = new Error('You are not authenticated!');                    
+      err.status = 401;
+      return next(err);
+  } else {
+      return next();
+  }
+}
+
+app.use(auth_passport);
+
 
 
 // catch 404 and forward to error handler
