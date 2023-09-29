@@ -8,6 +8,8 @@
 const express = require('express');
 const User = require('../models/user');
 const passport = require('passport');
+//token-based
+const authenticate = require('../authenticate');
 
 const usersRouter = express.Router();
 
@@ -37,6 +39,7 @@ usersRouter.get('/', function(req, res, next) {
 //     })
 //     .catch(err => next(err));
 // });
+//passport
 usersRouter.post('/signup', (req, res) => {
   User.register(
       new User({username: req.body.username}),
@@ -56,11 +59,19 @@ usersRouter.post('/signup', (req, res) => {
       }
   );
 });
+//passport
+// usersRouter.post('/login', passport.authenticate('local'), (req, res) => {
+//   res.statusCode = 200;
+//   res.setHeader('Content-Type', 'application/json');
+//   res.json({success: true, status: 'You are successfully logged in!'});
+// });
 
+//token-based
 usersRouter.post('/login', passport.authenticate('local'), (req, res) => {
+  const token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({success: true, status: 'You are successfully logged in!'});
+  res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
 // usersRouter.post('/login', (req, res, next) => {

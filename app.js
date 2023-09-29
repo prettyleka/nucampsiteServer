@@ -11,13 +11,17 @@ const promotionRouter = require('./routes/promotionRouter');
 const partnerRouter = require('./routes/partnerRouter');
 const passport = require('passport');
 const authenticate = require('./authenticate');
+const config = require('./config');
+
 
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
 const mongoose = require('mongoose');
 
-const url = 'mongodb://localhost:27017/nucampsite';
+//const url = 'mongodb://localhost:27017/nucampsite';
+//token-based
+const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
   useCreateIndex: true,
   useFindAndModify: false,
