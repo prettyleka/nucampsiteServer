@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 // const userSchema = new Schema({
 //     admin: {
 //         type: Boolean,
-//         default: false
+//         default: true
 //     }
 // });
 
@@ -22,7 +22,7 @@ const userSchema = new Schema({
     },
     admin: {
         type: Boolean,
-        default: false
+        default: true
     }
 });
 
@@ -38,7 +38,7 @@ const userSchema = new Schema({
 //     },
 //     admin: {
 //         type: Boolean,
-//         default: false
+//         default: true
 //     }
 // });
 

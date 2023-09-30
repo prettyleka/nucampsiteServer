@@ -12,7 +12,7 @@ promotionRouter.route('/')
 })
 //.post((req, res, next) => {
 //token-based
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
     Promotion.create(req.body)
     .then(promotion=>res.status(200).json(promotion))
     .catch(err=>next(err))
@@ -25,7 +25,7 @@ promotionRouter.route('/')
 })
 //.delete((req, res, next) => {
 //token-based
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
     Promotion.deleteMany()
     .then(promotions=>res.status(200).json(promotions))
     .catch(err=>next(err))
@@ -45,14 +45,14 @@ promotionRouter.route('/:promotionId')
 })
 //.put((req, res, next) => {
 //token-based
-.put(authenticate.verifyUser, (req, res) => {
+.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => {
     Promotion.findByIdAndUpdate(req.params.promotionId, req.body, {new:true})
     .then(promotion=>res.status(200).json(promotion))
     .catch(err=>next(err))
 })
 //.delete((req, res, next) => {
 //token-based
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
     Promotion.findByIdAndDelete(req.params.promotionId)
     .then(promotion=>res.status(200).json(promotion))
     .catch(err=>next(err))

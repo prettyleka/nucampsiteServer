@@ -11,7 +11,7 @@ partnerRouter.route('/')
 })
 //.post((req, res, next) => {
 //token-based
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
     Partner.create(req.body)
     .then(partner=>res.status(200).json(partner))
     .catch(err=>next(err))
@@ -24,7 +24,7 @@ partnerRouter.route('/')
 })
 //.delete((req, res, next) => {
 //token-based
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
     Partner.deleteMany()
     .then(partners=>res.status(200).json(partners))
     .catch(err=>next(err))
@@ -44,14 +44,14 @@ partnerRouter.route('/:partnerId')
 })
 //.put((req, res, next) => {
 //token-based
-.put(authenticate.verifyUser, (req, res) => {
+.put(authenticate.verifyUser, authenticate.verifyAdmin,(req, res) => {
     Partner.findByIdAndUpdate(req.params.partnerId, req.body, {new:true})
     .then(partner=>res.status(200).json(partner))
     .catch(err=>next(err))
 })
 //.delete((req, res, next) => {
 //token-based
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
     Partner.findByIdAndDelete(req.params.partnerId)
     .then(partner=>res.status(200).json(partner))
     .catch(err=>next(err))

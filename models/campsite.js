@@ -14,15 +14,15 @@ const commentSchema = new Schema({
         type: String,
         required: true
     },
-    // author: {
-    //     type: String,
-    //     required: true
-    // }
+    author: {
+        type: String,
+        required: true
+    }
   //mongoose-population
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-}  
+//   author: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: 'User'
+// }  
 }, {
     timestamps: true
 });
