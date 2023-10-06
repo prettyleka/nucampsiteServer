@@ -12,13 +12,14 @@ const passport = require('passport');
 const authenticate = require('../authenticate');
 
 const usersRouter = express.Router();
+const cors = require('./cors');
 
 /* GET users listing. */
 // usersRouter.get('/', function(req, res, next) {
 //     res.send('respond with a resource');
 // });
 
-usersRouter.get('/',authenticate.verifyUser, authenticate.verifyAdmin, (req,res, next)=>{
+usersRouter.get('/', cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req,res, next)=>{
     User.find()
     .then(users=>res.status(200).json(users))
     .catch(err=>next(err))
@@ -73,7 +74,7 @@ usersRouter.get('/',authenticate.verifyUser, authenticate.verifyAdmin, (req,res,
 // });
 
 //token-based
-usersRouter.post('/login', passport.authenticate('local'), (req, res) => {
+usersRouter.post('/login',cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
   const token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
@@ -81,7 +82,7 @@ usersRouter.post('/login', passport.authenticate('local'), (req, res) => {
 });
 
 //mongoose-populate
-usersRouter.post('/signup', (req, res) => {
+usersRouter.post('/signup', cors.corsWithOptions, (req, res) => {
   User.register(
       new User({username: req.body.username}),
       req.body.password,
@@ -155,7 +156,7 @@ usersRouter.post('/signup', (req, res) => {
 //     }
 // });
 
-usersRouter.get('/logout', (req, res, next) => {
+usersRouter.get('/logout', cors.corsWithOptions, (req, res, next) => {
     if (req.session) {
         req.session.destroy();
         res.clearCookie('session-id');
