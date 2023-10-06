@@ -7,19 +7,30 @@
 var app = require('../app');
 var debug = require('debug')('nucampsiteserver:server');
 var http = require('http');
-
+const https = require('https');
+const fs = require('fs');
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+//HTTPS and Secure Communication
+app.set('secPort', port+443);
 
 /**
  * Create HTTP server.
  */
+//HTTPS and Secure Communication
+const options = {
+  key: fs.readFileSync(__dirname+'/server.key'),
+  cert: fs.readFileSync(__dirname+'/server.cert')
+};
 
 var server = http.createServer(app);
+//HTTPS and Secure Communication
+const secureServer = https.createServer(options, app);
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +39,14 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+//HTTPS and Secure Communication
+
+secureServer.listen(app.get('secPort'), () => {
+  console.log('Server listening on port', app.get('secPort'));
+});
+secureServer.on('error', onError);
+secureServer.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
