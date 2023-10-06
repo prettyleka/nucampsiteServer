@@ -23,7 +23,9 @@ const userSchema = new Schema({
     admin: {
         type: Boolean,
         default: true
-    }
+    },
+    facebookId: String
+
 });
 
 // const userSchema = new Schema({
