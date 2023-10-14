@@ -11,38 +11,38 @@ const Schema = mongoose.Schema;
 // });
 
 //mongoose-population
-const userSchema = new Schema({
-    firstname: {
-        type: String,
-        default: ''
-    },
-    lastname: {
-        type: String,
-        default: ''
-    },
-    admin: {
-        type: Boolean,
-        default: true
-    },
-    facebookId: String
-
-});
-
 // const userSchema = new Schema({
-//     username: {
+//     firstname: {
 //         type: String,
-//         required: true,
-//         unique: true
+//         default: ''
 //     },
-//     password: {
+//     lastname: {
 //         type: String,
-//         required: true
+//         default: ''
 //     },
 //     admin: {
 //         type: Boolean,
 //         default: true
-//     }
+//     },
+//     facebookId: String
+
 // });
+
+const userSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    admin: {
+        type: Boolean,
+        default: true
+    }
+});
 
 userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model('User', userSchema);
